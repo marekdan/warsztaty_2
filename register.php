@@ -1,12 +1,12 @@
 <?php
 
-require_once ("./src/connection.php");
+require_once ('./src/connection.php');
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
+
     $user = User::RegisterUser($_POST['name'], $_POST['email'], $_POST['password1'], $_POST['password2'], $_POST['description']);
 
     if($user !== false){
-        //session_start();
         $_SESSION['userId'] = $user->getId();
         header('Location: showUser.php');
     }
@@ -18,6 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 ?>
 <head>
     <meta charset="utf-8">
+</head>
 <form action="register.php" method="POST">
     <label>
         Email:

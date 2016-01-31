@@ -2,10 +2,12 @@
 
 require_once ("./src/connection.php");
 
+
+
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $user = User::logInUser($_POST['email'], $_POST['password']);
+    //$user = User::logInUser('test@pl', '12345');
             if($user !== false){
-                //session_start();
                 $_SESSION['userId'] = $user->getId();
                 header('Location: showUser.php');
             }
@@ -16,7 +18,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 <form action="login.php" method="POST">
     <label>
         Email:
-        <input type="email" name="mail">
+        <input type="email" name="email">
     </label>
     <br>
     <label>
@@ -25,3 +27,6 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </label>
     <input type="submit">
 </form>
+
+<br>
+<!--<a href='register.php'>Strona z Rejstracja</a><br>-->

@@ -1,0 +1,24 @@
+.date{
+    width: 500px;
+    height: 30px;
+    background-color: green;
+    text-align: left;
+    color: aquamarine;
+}
+
+.tweet{
+    width: 500px;
+    height: 100px;
+    background-color: blue;
+    text-align: center;
+    color: aquamarine;
+}
+
+#loginfo{
+    position: relative;
+    width: 200px;
+    height: 100%;
+    background-color: beige;
+    color: aqua;
+}
+
