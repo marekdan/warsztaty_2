@@ -1,5 +1,5 @@
 .date{
-    width: 500px;
+    width: 400px;
     height: 30px;
     background-color: green;
     text-align: left;
@@ -7,7 +7,7 @@
 }
 
 .tweet{
-    width: 300px;
+    width: 400px;
     height: 100px;
     background-color: blue;
     text-align: center;
@@ -18,8 +18,8 @@
     position: relative;
     width: 200px;
     height: 100%;
-    background-color: beige;
-    color: aqua;
+    background-color: royalblue;
+    color: black;
 }
 
 #usershow{
@@ -54,4 +54,26 @@ a:visited
 a:visited
 {
     text-decoration: none;
+}
+
+.button {
+    width: 120px;
+    height: 30px;
+    font: bold 11px Arial;
+    text-decoration: none;
+    background-color: #EEEEEE;
+    color: #333333;
+    padding: 2px 6px 2px 6px;
+    border-top: 1px solid #CCCCCC;
+    border-right: 1px solid #333333;
+    border-bottom: 1px solid #333333;
+    border-left: 1px solid #CCCCCC;
+}
+
+.message{
+    width: 400px;
+    height: 100px;
+    background-color: black;
+    text-align: left;
+    color: #EEEEEE;
 }

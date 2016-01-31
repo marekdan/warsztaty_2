@@ -125,6 +125,17 @@ class User {
         }
     }
 
+    static public function sendMessage($senderId, $receiverId, $newMessage, $newDate) {
+        $sql = "INSERT INTO Messages (sender_id, receiver_id, message, message_date) VALUES ('$senderId', '$receiverId', '$newMessage', '$newDate')";
+        $result = self::$connection->query($sql);
+        if ($result !== false) {
+            echo "Wiadomość wysłana";
+        }
+        else {
+            echo 'Wystąpil problem z wyslaniem wiadomosci';
+        }
+    }
+
     static public function updateDescription($userId, $newDesc) {
         $sql = "UPDATE Users SET description='$newDesc' WHERE id ='$userId'";
         $result = self::$connection->query($sql);
@@ -142,10 +153,10 @@ class User {
     private $description;
 
 
-    public function __construct($newId, $newName, $newEmial, $newDescription) {
+    public function __construct($newId, $newName, $newEmail, $newDescription) {
         $this->id = intval($newId);
         $this->name = $newName;
-        $this->email = $newEmial;
+        $this->email = $newEmail;
         $this->setDescription($newDescription);
     }
 
@@ -185,7 +196,6 @@ class User {
 
         $ret = [];
 
-        //$sql = "SELECT tweet, post_d FROM Tweets WHERE user_id='$userId' ORDER BY post_d desc";
         $sql = "SELECT * FROM Tweets WHERE user_id='$userId' ORDER BY post_d desc";
         $result = self::$connection->query($sql);
 
@@ -193,24 +203,41 @@ class User {
             while ($row = $result->fetch_assoc()) {
                 $ret[] = $row;
             }
+
             return $ret;
         }
     }
 
-    public function loadAllSendMessages() {
-        $ret = [];
-        // TODO: Finish this function
-        // TODO: It should return table of Messages sens by this user (date DESC)
+    public function loadAllSendMessages($userId) {
 
-        return $ret;
+        $ret = [];
+
+        $sql = "SELECT * FROM Messages WHERE receiver_id='$userId' ORDER BY message_date desc";
+        $result = self::$connection->query($sql);
+
+        if ($result !== false) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = $row;
+            }
+
+            return $ret;
+        }
     }
 
-    public function loadAllReceivedMessages() {
-        $ret = [];
-        // TODO: Finish this function
-        // TODO: It should return table of Recived sens by this user (date DESC)
+    public function loadAllReceivedMessages($userId) {
 
-        return $ret;
+        $ret = [];
+
+        $sql = "SELECT * FROM Messages WHERE sender_id='$userId' ORDER BY message_date desc";
+        $result = self::$connection->query($sql);
+
+        if ($result !== false) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = $row;
+            }
+
+            return $ret;
+        }
     }
 
 }

@@ -1,6 +1,6 @@
 <?php
 
-require_once ("./src/connection.php");
+require_once("./src/connection.php");
 
-unset ($_SESSSION['userId']);
+unset ($_SESSION['userId']);
 header('Location: login.php');

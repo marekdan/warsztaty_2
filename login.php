@@ -1,15 +1,13 @@
 <?php
 
-require_once ("./src/connection.php");
+require_once("./src/connection.php");
 
-
-
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = User::logInUser($_POST['email'], $_POST['password']);
-            if($user !== false){
-                $_SESSION['userId'] = $user->getId();
-                header('Location: showUser.php');
-            }
+    if ($user !== false) {
+        $_SESSION['userId'] = $user->getId();
+        header('Location: showUser.php');
+    }
 }
 
 ?>
