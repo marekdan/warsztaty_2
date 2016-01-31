@@ -7,7 +7,7 @@
 }
 
 .tweet{
-    width: 500px;
+    width: 300px;
     height: 100px;
     background-color: blue;
     text-align: center;
@@ -22,3 +22,36 @@
     color: aqua;
 }
 
+#usershow{
+    width: 150px;
+    height: 100px;
+    color: black;
+    background-color: greenyellow;
+    text-align: center;
+}
+
+#link{
+    width: 250px;
+    height: 30px;
+    background-color: royalblue;
+    text-align: center;
+    padding-top: 5px;
+    color: greenyellow;
+}
+
+a:hover
+{
+    text-decoration: none;
+}
+a:link
+{
+    text-decoration: none;
+}
+a:visited
+{
+    text-decoration: none;
+}
+a:visited
+{
+    text-decoration: none;
+}

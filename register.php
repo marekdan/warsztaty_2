@@ -46,3 +46,5 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
     </label>
     <input type="submit" value="Przeslij">
 </form>
+<br>
+<a href='login.php'>Wróc do strony logowania</a><br>

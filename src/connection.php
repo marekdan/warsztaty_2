@@ -12,4 +12,3 @@ if($conn->connect_errno){
 }
 
 User::SetConnection($conn);
-
