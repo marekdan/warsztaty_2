@@ -9,23 +9,26 @@
 
 require_once("./src/connection.php");
 
-$message = null;
+if(!isset($_GET['userId']) && !isset($_SESSION['userId'])){
+    header("Location: login.php");
+}
 
 if (isset($_GET['userId'])) {
     $userId = $_GET['userId'];
     if ($userId != $_SESSION['userId']) {
+/*        wysyłanie wiadomości jako zalogowany temu wywołanemu przez geta
+         jednocześnie nie pozwalajac na wysyałenie wiadomosci do samego siebie*/
         echo "
             <form action='showUser.php' method='POST'>
                 <input type='text' name='message'>
                 <input type='hidden' value='$userId' name='receiver'>
-                <input type='submit' value='Wyslij wiadomosc'>
+                <input type='submit' value='Wyslij wiadomość'>
             </form>
 
             <a href='showUser.php'>
                 <div class='button'>POKAŻ SWOJ PROFIL</div>
             </a>
-        <!--wysyłanie wiadomości jako zalogowany temu wywołanemu przez geta
-         jednocześnie nie pozwalajac na wysyałenie wiadomosci do samego siebie-->
+
         ";
     }
 }
@@ -71,7 +74,7 @@ if ($userToShow !== false) {
             else {
                 echo "Twoj tweet jest pusty, jeżeli chcesz go wysłać to wprowadź do niego tekst";
             }
-
+            $message = null;
             $message = $_POST['message'];
 
             if ($message != null) {

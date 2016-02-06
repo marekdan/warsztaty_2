@@ -35,6 +35,7 @@ if (isset($_SESSION['userId'])) {
     }
 }
 else{
-    echo "Żadaen użytkownik nie jest zalogowany";
+    //echo "Żadaen użytkownik nie jest zalogowany";
+    header("Location: login.php");
 }
 

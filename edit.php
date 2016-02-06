@@ -6,7 +6,7 @@ if (isset($_SESSION['userId'])) {
     echo "
 <form action='edit.php' method='POST'>
     <input type='text' name='desc'>
-    <input type='submit' value='Zmien opis'>
+    <input type='submit' value='Zmień opis'>
 </form>
 
 <form action='showUser.php'>
@@ -30,6 +30,6 @@ if (isset($_SESSION['userId'])) {
     }
 }
 else {
-    echo "Żaden użtkownik nie jest zalogowany";
+    header("Location: login.php");
 }
 ?>
