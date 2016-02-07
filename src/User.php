@@ -52,7 +52,6 @@ class User {
             'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)
         ];
         $hassedPassword = password_hash($password1, PASSWORD_BCRYPT, $options);
-
         $sql = "INSERT INTO Users(name, email, password, description)
                 VALUES ('$newName', '$newEmail', '$hassedPassword', '$newDescription')";
 
@@ -99,10 +98,8 @@ class User {
 
     static public function GetAllUsers() {
         $ret = [];
-
         $sql = "SELECT * FROM Users";
         $result = self::$connection->query($sql);
-
         if ($result !== false) {
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
@@ -121,7 +118,7 @@ class User {
         if ($result !== false) {
         }
         else {
-            echo 'Wystąpil problem z dodaniem tweeta';
+            echo 'Wystąpił problem z dodaniem tweeta';
         }
     }
 
@@ -129,10 +126,10 @@ class User {
         $sql = "INSERT INTO Messages (sender_id, receiver_id, message, message_date) VALUES ('$senderId', '$receiverId', '$newMessage', '$newDate')";
         $result = self::$connection->query($sql);
         if ($result !== false) {
-            echo "Wiadomość wysłana";
+            echo 'Wiadomość wysłana';
         }
         else {
-            echo 'Wystąpil problem z wyslaniem wiadomosci';
+            echo 'Wystąpił problem z wysłaniem wiadomości';
         }
     }
 
@@ -146,12 +143,10 @@ class User {
         return false;
     }
 
-
     private $id;
     private $name;
     private $email;
     private $description;
-
 
     public function __construct($newId, $newName, $newEmail, $newDescription) {
         $this->id = intval($newId);
@@ -193,9 +188,7 @@ class User {
     }
 
     public function loadAllTweets($userId) {
-
         $ret = [];
-
         $sql = "SELECT * FROM Tweets WHERE user_id='$userId' ORDER BY post_d desc";
         $result = self::$connection->query($sql);
 
@@ -209,9 +202,7 @@ class User {
     }
 
     public function loadAllSendMessages($userId) {
-
         $ret = [];
-
         $sql = "SELECT * FROM Messages WHERE receiver_id='$userId' ORDER BY message_date desc";
         $result = self::$connection->query($sql);
 
@@ -225,9 +216,7 @@ class User {
     }
 
     public function loadAllReceivedMessages($userId) {
-
         $ret = [];
-
         $sql = "SELECT * FROM Messages WHERE sender_id='$userId' ORDER BY message_date desc";
         $result = self::$connection->query($sql);
 
@@ -239,7 +228,4 @@ class User {
             return $ret;
         }
     }
-
 }
-
-?>

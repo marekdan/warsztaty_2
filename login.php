@@ -1,6 +1,6 @@
 <?php
 
-require_once("./src/connection.php");
+require_once('./src/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = User::logInUser($_POST['email'], $_POST['password']);
@@ -24,6 +24,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </label>
     <input type="submit">
 </form>
-
 <br>
-<a href='register.php'>Zarejestruj sie</a><br>
+<a href="register.php">Zarejestruj sie</a><br>
