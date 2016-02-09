@@ -233,7 +233,7 @@ class User {
         }
     }
 
-    public function loadAllSendMessages($userId) {
+    public function loadAllReceivedMessages($userId) {
         $ret = [];
         $sql = "SELECT * FROM Messages WHERE receiver_id='$userId' ORDER BY message_date desc";
         $result = self::$connection->query($sql);
@@ -247,7 +247,7 @@ class User {
         }
     }
 
-    public function loadAllReceivedMessages($userId) {
+    public function loadAllSendMessages($userId) {
         $ret = [];
         $sql = "SELECT * FROM Messages WHERE sender_id='$userId' ORDER BY message_date desc";
         $result = self::$connection->query($sql);

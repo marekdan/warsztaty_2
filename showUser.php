@@ -92,7 +92,7 @@ if ($userToShow !== false) {
             $comment_counter++; //zliczanie ilosci komentarzy
         }
 //        echo '<div class="comment_counter">Ilość komentarzy: ' . $comment_counter . '<a href="show_post.php?tweetId=' . $tweet['id'] . '&userName=' . $userToShow['name'] . ' ">POKAŻ WIĘCEJ</a> </div>';
-        echo '<div class="comment">Ilość komentarzy: ' . $comment_counter . '<a href="show_post.php?tweetId='.$tweet['id'].'&userName='. $currName .'"> POKAŻ WIĘCEJ</a></div>';
+        echo '<div class="comment">Ilość komentarzy: ' . $comment_counter . '<a href="show_post.php?tweetId='.$tweet['id'].'&userName='. $userToShow->getName() .'"> POKAŻ WIĘCEJ</a></div>';
         //<a href="show_post.php?tweetId=' . $tweet['id'] . '&userName=' . $userToShow['name'] . ' ">POKAŻ WIĘCEJ</a> </div>';
         echo '<div style=" margin: 60px 0px"></div>';
     }
