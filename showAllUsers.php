@@ -13,9 +13,7 @@ if (!isset($_GET['userId']) && !isset($_SESSION['userId'])) {
 }
 else {
     echo '
-        <a href="showUser.php">
-            <div class="button">POKAŻ SWOJ PROFIL</div>
-        </a>
+        <div class="button"><a href="showUser.php">POKAŻ SWOJ PROFIL</a></div>
     ';
 
     $allUsers = User::GetAllUsers();

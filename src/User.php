@@ -7,7 +7,8 @@ CREATE TABLE Users(
     email varchar(255) UNIQUE,
     password char(60),
     description varchar(255),
-    PRIMARY KEY (id);
+    PRIMARY KEY (id)
+    );
 
 CREATE TABLE Tweets (
     id int AUTO_INCREMENT,
@@ -30,8 +31,15 @@ CREATE TABLE Messages (
     );
 
 CREATE TABLE Comments (
-);
-
+    id int AUTO_INCREMENT,
+    tweet_id int,
+    user_id int,
+    comment_text varchar(60),
+    comment_date datetime,
+    PRIMARY KEY (id),
+    FOREIGN KEY (tweet_id) REFERENCES Tweets (id),
+    FOREIGN KEY (user_id) REFERENCES Users (id)
+    );
  */
 
 class User {
@@ -116,6 +124,7 @@ class User {
         $sql = "INSERT INTO Tweets (user_id, tweet, post_d) VALUES ('$userId', '$tweet', '$date')";
         $result = self::$connection->query($sql);
         if ($result !== false) {
+            echo 'Tweet został dodany';
         }
         else {
             echo 'Wystąpił problem z dodaniem tweeta';
@@ -142,6 +151,18 @@ class User {
 
         return false;
     }
+
+    static public function addComment($tweetId, $userId, $newMessage, $newDate) {
+        $sql = "INSERT INTO Comments (tweet_id, user_id, comment_text, comment_date) VALUES ('$tweetId', '$userId', '$newMessage', '$newDate')";
+        $result = self::$connection->query($sql);
+        if ($result !== false) {
+            echo 'Komentarz został dodany';
+        }
+        else {
+            echo 'Wystąpił problem z dodaniem tweeta';
+        }
+    }
+
 
     private $id;
     private $name;
@@ -201,6 +222,17 @@ class User {
         }
     }
 
+    public function loadSingleTweet($tweetId) {
+        $sql = "SELECT * FROM Tweets WHERE id='$tweetId' ";
+        $result = self::$connection->query($sql);
+
+        if ($result !== false) {
+            $row = $result->fetch_assoc();
+
+            return $row;
+        }
+    }
+
     public function loadAllSendMessages($userId) {
         $ret = [];
         $sql = "SELECT * FROM Messages WHERE receiver_id='$userId' ORDER BY message_date desc";
@@ -218,6 +250,21 @@ class User {
     public function loadAllReceivedMessages($userId) {
         $ret = [];
         $sql = "SELECT * FROM Messages WHERE sender_id='$userId' ORDER BY message_date desc";
+        $result = self::$connection->query($sql);
+
+        if ($result !== false) {
+            while ($row = $result->fetch_assoc()) {
+                $ret[] = $row;
+            }
+
+            return $ret;
+        }
+
+    }
+
+    public function loadAllComments($tweetId) {
+        $ret = [];
+        $sql = "SELECT * FROM Comments WHERE tweet_id='$tweetId' ORDER BY comment_date desc";
         $result = self::$connection->query($sql);
 
         if ($result !== false) {

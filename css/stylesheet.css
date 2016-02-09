@@ -43,14 +43,17 @@ a:hover
 {
     text-decoration: none;
 }
+
 a:link
 {
     text-decoration: none;
 }
+
 a:visited
 {
     text-decoration: none;
 }
+
 a:visited
 {
     text-decoration: none;
@@ -74,6 +77,14 @@ a:visited
     width: 400px;
     height: 100px;
     background-color: black;
+    text-align: left;
+    color: #EEEEEE;
+}
+
+.comment{
+    width: 400px;
+    height: 50px;
+    background-color: firebrick;
     text-align: left;
     color: #EEEEEE;
 }
