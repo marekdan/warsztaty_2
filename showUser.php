@@ -11,9 +11,10 @@ if (isset($_GET['userId'])) {
     if ($userId != $_SESSION['userId']) {
         //wysyłanie wiadomości jako zalogowany temu wywołanemu przez geta jednocześnie nie pozwalając na wysłanie wiadomości do samego siebie
         echo '
-            <form action="showUser.php" method="POST">
+            <form method="POST">
+                <input type="hidden" name="forms" value="sending_message">
+                <input type="hidden" name="receiver" value="'.$userId.'">
                 <input type="text" name="message">
-                <input type="hidden" value="$userId" name="receiver">
                 <input type="submit" value="Wyslij wiadomość">
             </form>
 
@@ -65,11 +66,6 @@ if ($userToShow !== false) {
             else {
                 echo 'Twoj tweet jest pusty, jeżeli chcesz go wysłać to wprowadź do niego tekst';
             }
-
-            if ($_POST['message'] != null) {
-                User::sendMessage($currentlyLoggedUser->getId(), $_POST['receiver'], $message, date('Y-m-d G:i:s'));
-                header('Location: showUser.php?userId=' . $_POST['receiver']);
-            }
         }
     }
 
@@ -91,14 +87,19 @@ if ($userToShow !== false) {
         foreach ($userToShow->loadAllComments($tweet['id']) as $comment) {
             $comment_counter++; //zliczanie ilosci komentarzy
         }
-//        echo '<div class="comment_counter">Ilość komentarzy: ' . $comment_counter . '<a href="show_post.php?tweetId=' . $tweet['id'] . '&userName=' . $userToShow['name'] . ' ">POKAŻ WIĘCEJ</a> </div>';
-        echo '<div class="comment">Ilość komentarzy: ' . $comment_counter . '<a href="show_post.php?tweetId='.$tweet['id'].'&userName='. $userToShow->getName() .'"> POKAŻ WIĘCEJ</a></div>';
-        //<a href="show_post.php?tweetId=' . $tweet['id'] . '&userName=' . $userToShow['name'] . ' ">POKAŻ WIĘCEJ</a> </div>';
+        echo '<div class="comment">Ilość komentarzy: ' . $comment_counter . '<a href="show_post.php?tweetId=' . $tweet['id'] . '&userName=' . $userToShow->getName() . '"> POKAŻ WIĘCEJ</a></div>';
         echo '<div style=" margin: 60px 0px"></div>';
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['forms'] == 'adding_comment') {
         User::addComment($_POST['tweet_id'], $currentlyLoggedUser->getId(), $_POST['comment'], date('Y-m-d G:i:s'));
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['forms'] == 'sending_message') {
+        if ($_POST['message'] != null) {
+            User::sendMessage($currentlyLoggedUser->getId(), $_POST['receiver'], $_POST['message'], date('Y-m-d G:i:s'));
+            header('Location: showUser.php?userId=' . $_POST['receiver']);
+        }
     }
 }
 else {

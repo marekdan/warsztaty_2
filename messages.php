@@ -17,10 +17,15 @@ if (isset($_SESSION['userId'])) {
 
         $senderName = User::getUserById($message['sender_id'])->getName();
 
+        $messageText = $message['message'];
+        if (strlen($messageText) > 30) {
+            $messageText = substr($messageText, 0, 30) . '...';
+        }
+
         echo '
             <div>Wiadomość od użytkownika: ' . $senderName . '</div>
             <div class="date"> Czas wysłania wiadomości: ' . $message['message_date'] . '</div>
-            <div class="message">' . $message['message'] . '</div><br>
+            <div class="message">' . $messageText . '</div><br>
         ';
     }
 
@@ -29,10 +34,15 @@ if (isset($_SESSION['userId'])) {
 
         $receiverName = User::getUserById($message['receiver_id'])->getName();
 
+        $messageText = $message['message'];
+        if (strlen($message['message']) > 30) {
+            $messageText = substr($messageText, 0, 30) . '...';
+        }
+
         echo '
             <div>Wiadomość do użytkownika: ' . $receiverName . '</div>
             <div class="date"> Czas wysłania wiadomości: ' . $message['message_date'] . '</div>
-            <div class="message">' . $message['message'] . '</div><br>
+            <div class="message">' . $messageText . '</div><br>
         ';
     }
 }

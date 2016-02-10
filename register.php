@@ -9,7 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header('Location: showUser.php');
     }
     else {
-        echo 'Złe dane rejstracji';
+        echo 'Podaj inny email';
     }
 }
 

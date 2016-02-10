@@ -152,6 +152,22 @@ class User {
         return false;
     }
 
+    static public function updatePassword($userId, $newPassword) {
+        $options = [
+            'cost' => 11,
+            'salt' => mcrypt_create_iv(22, MCRYPT_DEV_URANDOM)
+        ];
+        $hassedPassword = password_hash($newPassword, PASSWORD_BCRYPT, $options);
+
+        $sql = "UPDATE Users SET password='$hassedPassword' WHERE id ='$userId'";
+        $result = self::$connection->query($sql);
+        if ($result === true) {
+            return true;
+        }
+
+        return false;
+    }
+
     static public function addComment($tweetId, $userId, $newMessage, $newDate) {
         $sql = "INSERT INTO Comments (tweet_id, user_id, comment_text, comment_date) VALUES ('$tweetId', '$userId', '$newMessage', '$newDate')";
         $result = self::$connection->query($sql);
