@@ -2,10 +2,14 @@
 
 require_once('./src/connection.php');
 
+if (!isset($_SESSION['userId'])) {
+    header('Location: login.php');
+}
+
 if (isset($_SESSION['userId'])) {
     echo '
         <form action="edit.php" method="POST">
-            <input type="hidden" name="actions" value="desc">
+            <input type="hidden" name="actions" value="desc_change">
             <input type="text" name="desc">
             <input type="submit" value="Zmień opis">
         </form>
@@ -16,12 +20,17 @@ if (isset($_SESSION['userId'])) {
             <input type="submit" value="Zmień hasło">
         </form>
 
+        <form action="edit.php" method="POST">
+            <input type="hidden" name="actions" value="acc_delete">
+            <input type="submit" value="Usun konto">
+        </form>
+
         <form action="showUser.php">
             <input type="submit" value="Wróć do poprzedniej strony">
         </form>
     ';
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['actions'] == 'desc') {
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['actions'] == 'desc_change') {
         $newDesc = $_POST['desc'];
         $userId = $_SESSION['userId'];
         $upDesc = User::updateDescription($userId, $newDesc);
@@ -29,7 +38,7 @@ if (isset($_SESSION['userId'])) {
             echo 'Opis zmieniony';
         }
         else {
-            echo 'Operacja nie udana';
+            echo 'Operacja zmiany opisu nie udana';
         }
     }
 
@@ -41,7 +50,17 @@ if (isset($_SESSION['userId'])) {
             echo 'Hasło zmienione';
         }
         else {
-            echo 'Operacja nie udana';
+            echo 'Operacja zmiany hasła nie udana';
+        }
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] == 'POST' && $_POST['actions'] == 'acc_delete') {
+        $deleteUser = User::deleteUser($_SESSION['userId']);
+        if ($deleteUser === true) {
+            header('Location: logout.php');
+        }
+        else {
+            echo 'Operacja usunięcia konta nie udana';
         }
     }
 }

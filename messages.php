@@ -2,9 +2,13 @@
 
 require_once('./src/connection.php');
 
+if (!isset($_SESSION['userId'])) {
+    header('Location: login.php');
+}
+
 echo '
     <form action="showUser.php">
-        <input type="submit" value="Wróć do poprzedniej strony">
+        <input type="submit" value="Wróć do strony profilowej">
     </form>
 ';
 
@@ -13,35 +17,38 @@ if (isset($_SESSION['userId'])) {
     $userToShow = User::getUserById($userId);
 
     echo '<h3>Wiadomości odebrane</h3>';
-    foreach ($userToShow->loadAllReceivedMessages($userId) as $message) {
+    foreach (Message::loadAllReceivedMessages($userId) as $message) {
+        $senderName = User::getUserById($message->getSenderId())->getName();
+        $messageText = $message->getMessage();
+        if (strlen($messageText) > 30) {
+            $messageText = substr($messageText, 0, 30) . '...';
+        }
 
-        $senderName = User::getUserById($message['sender_id'])->getName();
+        if($message->getStatus() == 1){
+            echo 'WIADOMOSC JESZCZE NIE ZOSTAŁA PRZECZYTANA!';
+        }
 
-        $messageText = $message['message'];
+        echo '
+            <div>Wiadomość od użytkownika: ' . $senderName . '</div>
+            <div class="date"> Czas wysłania wiadomości: ' . $message->getDate() . '</div>
+            <div class="message">' . $messageText . '</div><br>
+        ';
+
+        $message->setStatus(0);
+        $message->saveToDb();
+    }
+
+    echo '<h3>Wiadomości wysłane</h3>';
+    foreach (Message::loadAllSendMessages($userId) as $message) {
+        $receiverName = User::getUserById($message->getReceiverId())->getName();
+        $messageText = $message->getMessage();
         if (strlen($messageText) > 30) {
             $messageText = substr($messageText, 0, 30) . '...';
         }
 
         echo '
-            <div>Wiadomość od użytkownika: ' . $senderName . '</div>
-            <div class="date"> Czas wysłania wiadomości: ' . $message['message_date'] . '</div>
-            <div class="message">' . $messageText . '</div><br>
-        ';
-    }
-
-    echo '<h3>Wiadomości wysłane</h3>';
-    foreach ($userToShow->loadAllSendMessages($userId) as $message) {
-
-        $receiverName = User::getUserById($message['receiver_id'])->getName();
-
-        $messageText = $message['message'];
-        if (strlen($message['message']) > 30) {
-            $messageText = substr($messageText, 0, 30) . '...';
-        }
-
-        echo '
             <div>Wiadomość do użytkownika: ' . $receiverName . '</div>
-            <div class="date"> Czas wysłania wiadomości: ' . $message['message_date'] . '</div>
+            <div class="date"> Czas wysłania wiadomości: ' . $message->getDate() . '</div>
             <div class="message">' . $messageText . '</div><br>
         ';
     }

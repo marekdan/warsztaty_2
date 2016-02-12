@@ -1,6 +1,7 @@
 <?php
 
 /*
+
 CREATE TABLE Users(
     id int AUTO_INCREMENT,
     name varchar(255),
@@ -10,39 +11,14 @@ CREATE TABLE Users(
     PRIMARY KEY (id)
     );
 
-CREATE TABLE Tweets (
-    id int AUTO_INCREMENT,
-    user_id int,
-    tweet varchar(140),
-    post_date date,
-    PRIMARY KEY (id),
-    FOREIGN KEY (user_id) REFERENCES Users (id)
-    );
-
-CREATE TABLE Messages (
-    id int AUTO_INCREMENT,
-    sender_id int,
-    receiver_id int,
-    message varchar(255),
-    message_date datetime,
-    PRIMARY KEY (id),
-    FOREIGN KEY (sender_id) REFERENCES Users (id),
-    FOREIGN KEY (receiver_id) REFERENCES Users (id)
-    );
-
-CREATE TABLE Comments (
-    id int AUTO_INCREMENT,
-    tweet_id int,
-    user_id int,
-    comment_text varchar(60),
-    comment_date datetime,
-    PRIMARY KEY (id),
-    FOREIGN KEY (tweet_id) REFERENCES Tweets (id),
-    FOREIGN KEY (user_id) REFERENCES Users (id)
-    );
  */
 
 class User {
+
+    private $id;
+    private $name;
+    private $email;
+    private $description;
 
     static private $connection;
 
@@ -120,30 +96,18 @@ class User {
         }
     }
 
-    static public function addTweet($userId, $tweet, $date) {
-        $sql = "INSERT INTO Tweets (user_id, tweet, post_d) VALUES ('$userId', '$tweet', '$date')";
-        $result = self::$connection->query($sql);
-        if ($result !== false) {
-            echo 'Tweet został dodany';
-        }
-        else {
-            echo 'Wystąpił problem z dodaniem tweeta';
-        }
-    }
-
-    static public function sendMessage($senderId, $receiverId, $newMessage, $newDate) {
-        $sql = "INSERT INTO Messages (sender_id, receiver_id, message, message_date) VALUES ('$senderId', '$receiverId', '$newMessage', '$newDate')";
-        $result = self::$connection->query($sql);
-        if ($result !== false) {
-            echo 'Wiadomość wysłana';
-        }
-        else {
-            echo 'Wystąpił problem z wysłaniem wiadomości';
-        }
-    }
-
     static public function updateDescription($userId, $newDesc) {
         $sql = "UPDATE Users SET description='$newDesc' WHERE id ='$userId'";
+        $result = self::$connection->query($sql);
+        if ($result === true) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function saveToDb() {
+        $sql = "UPDATE Users SET description='$this->description' WHERE id = '$this->id'";
         $result = self::$connection->query($sql);
         if ($result === true) {
             return true;
@@ -168,22 +132,15 @@ class User {
         return false;
     }
 
-    static public function addComment($tweetId, $userId, $newMessage, $newDate) {
-        $sql = "INSERT INTO Comments (tweet_id, user_id, comment_text, comment_date) VALUES ('$tweetId', '$userId', '$newMessage', '$newDate')";
+    static public function deleteUser($userId) {
+        $sql = "DELETE FROM Users WHERE id='$userId'";
         $result = self::$connection->query($sql);
-        if ($result !== false) {
-            echo 'Komentarz został dodany';
+        if ($result === true) {
+            return true;
         }
-        else {
-            echo 'Wystąpił problem z dodaniem tweeta';
-        }
+
+        return false;
     }
-
-
-    private $id;
-    private $name;
-    private $email;
-    private $description;
 
     public function __construct($newId, $newName, $newEmail, $newDescription) {
         $this->id = intval($newId);
@@ -214,81 +171,4 @@ class User {
         }
     }
 
-    public function saveToDb() {
-        $sql = "UPDATE Users SET description='$this->description' WHERE id = '$this->id'";
-        $result = self::$connection->query($sql);
-        if ($result === true) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public function loadAllTweets($userId) {
-        $ret = [];
-        $sql = "SELECT * FROM Tweets WHERE user_id='$userId' ORDER BY post_d desc";
-        $result = self::$connection->query($sql);
-
-        if ($result !== false) {
-            while ($row = $result->fetch_assoc()) {
-                $ret[] = $row;
-            }
-
-            return $ret;
-        }
-    }
-
-    public function loadSingleTweet($tweetId) {
-        $sql = "SELECT * FROM Tweets WHERE id='$tweetId' ";
-        $result = self::$connection->query($sql);
-
-        if ($result !== false) {
-            $row = $result->fetch_assoc();
-
-            return $row;
-        }
-    }
-
-    public function loadAllReceivedMessages($userId) {
-        $ret = [];
-        $sql = "SELECT * FROM Messages WHERE receiver_id='$userId' ORDER BY message_date desc";
-        $result = self::$connection->query($sql);
-
-        if ($result !== false) {
-            while ($row = $result->fetch_assoc()) {
-                $ret[] = $row;
-            }
-
-            return $ret;
-        }
-    }
-
-    public function loadAllSendMessages($userId) {
-        $ret = [];
-        $sql = "SELECT * FROM Messages WHERE sender_id='$userId' ORDER BY message_date desc";
-        $result = self::$connection->query($sql);
-
-        if ($result !== false) {
-            while ($row = $result->fetch_assoc()) {
-                $ret[] = $row;
-            }
-
-            return $ret;
-        }
-
-    }
-
-    public function loadAllComments($tweetId) {
-        $ret = [];
-        $sql = "SELECT * FROM Comments WHERE tweet_id='$tweetId' ORDER BY comment_date desc";
-        $result = self::$connection->query($sql);
-
-        if ($result !== false) {
-            while ($row = $result->fetch_assoc()) {
-                $ret[] = $row;
-            }
-
-            return $ret;
-        }
-    }
 }

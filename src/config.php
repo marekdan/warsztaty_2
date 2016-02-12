@@ -3,4 +3,4 @@
 $dbUsername = 'root';
 $dbPassword = 'coderslab';
 $dbHost = 'localhost';
-$dbBaseName = 'Tweeter';
+$dbBaseName = 'Tweettest';

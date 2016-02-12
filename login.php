@@ -8,6 +8,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $_SESSION['userId'] = $user->getId();
         header('Location: showUser.php');
     }
+    else{
+        echo 'Błędne dane logowania';
+    }
 }
 
 ?>

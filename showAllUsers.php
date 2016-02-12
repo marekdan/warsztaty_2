@@ -20,6 +20,6 @@ else {
 
     foreach ($allUsers as $userToShow) {
         echo '<div id="usershow" ><h2>' . $userToShow->getName() . '</h2>';
-        echo "<a href='showUser.php?userId={$userToShow->getId()}'>Odwiedz profil</a> </div>";
+        echo '<a href="showUser.php?userId=' . $userToShow->getId() . '">Odwiedz profil</a> </div>';
     }
 }

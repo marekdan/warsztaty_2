@@ -12,16 +12,15 @@ echo '
     </form>
 ';
 
-$singleTweet = User::loadSingleTweet($_GET['tweetId']);
+$singleTweet = Tweet::loadSingleTweet($_GET['tweetId']);
 
 echo 'Post został napisany przez użytkownika: ' . $_GET['userName'];
 
-echo '<div class="date"> Czas tweeta: ' . $singleTweet['post_d'] . ' Id tweeta: ' . $singleTweet['id'] . '</div>';
-echo '<div class="tweet">' . $singleTweet['tweet'] . '</div>';
+echo '<div class="date"> Czas tweeta: ' . $singleTweet->getDate() . ' Id tweeta: ' . $singleTweet->getId() . '</div>';
+echo '<div class="tweet">' . $singleTweet->getText() . '</div>';
 echo '<div style=" margin: 60px 0px"></div>';
 
-foreach (User::loadAllComments($singleTweet['id']) as $comment) {
-    echo '<div class="date"> Czas komentarza: ' . $comment['comment_date'] . ' . </div>';
-    echo '<div class="comment">' . $comment['comment_text'] . '</div><br>';
+foreach (Comment::loadAllComments($singleTweet->getId()) as $comment) {
+    echo '<div class="date"> Czas komentarza: ' . $comment->getCommentDate() . '</div>';
+    echo '<div class="comment">' . $comment->getText() . '</div><br>';
 }
-
